@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/gray"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp" >
+
+        <TextView
+            android:id="@+id/textViewAlarmTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="11:41"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/textViewAlarmName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textViewAlarmTime"
+            android:layout_alignBottom="@+id/textViewAlarmTime"
+            android:layout_toRightOf="@+id/textViewAlarmTime"
+            android:text="Abhi"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+       <TextView
+           android:id="@+id/textViewAlarmDay"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_alignBottom="@+id/linearLayout1"
+           android:layout_alignLeft="@+id/textViewDate"
+           android:text="Monday"
+           android:textAppearance="?android:attr/textAppearanceMedium" />
+
+       <TextView
+           android:id="@+id/textViewDate"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginLeft="17dp"
+           android:layout_toRightOf="@+id/linearLayout1"
+           android:text="25-Jan" />
+
+       <Switch
+           android:id="@+id/switchOnOff"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_centerVertical="true"
+           android:layout_toRightOf="@+id/textViewAlarmDay" />
+
+       <ImageButton
+           android:id="@+id/buttonDelete"
+           android:layout_width="40dp"
+           android:layout_height="50dp"
+           android:layout_alignParentRight="true"
+           android:layout_alignParentTop="true"
+           android:background="@color/gray"
+           android:src="@drawable/delete"/>
+
+</RelativeLayout>
