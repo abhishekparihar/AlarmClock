@@ -15,5 +15,7 @@
     <string name="selected_date">Selected Date</string>
     <string name="date">Date</string>
     <string name="no_alarm_set_press_add_to_create_new_">No alarm set, Press ADD to create new.</string>
+    <string name="snooz">Snooz</string>
+    <string name="dismiss_">Dismiss!</string>
 
 </resources>

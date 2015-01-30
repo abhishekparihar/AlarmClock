@@ -83,10 +83,10 @@ public class DbAdapter {
 		return null;
 	}
 
-	final public int getCount() {
+	/*final public int getCount() {
 		int cnt;
 
-		Cursor c = db.rawQuery("SELECT count(*) AS our_count FROM " + dbName, null);
+		Cursor c = db.rawQuery("SELECT count(*) AS our_count FROM " + "alarm", null);
 
 		if (c.moveToFirst()) {
 			cnt = c.getInt(0);
@@ -97,7 +97,7 @@ public class DbAdapter {
 		c.close();
 
 		return cnt;
-	}
+	}*/
 
 	final public void beginTransaction() {
 		db.beginTransaction();

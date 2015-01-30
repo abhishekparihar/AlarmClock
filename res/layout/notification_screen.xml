@@ -3,25 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/textViewName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="48dp"
-        android:text=""
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <TextView
-        android:id="@+id/textViewTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text=""
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
       <Button
           android:id="@+id/buttonSnooz"
           android:layout_width="wrap_content"
@@ -29,7 +10,8 @@
           android:layout_above="@+id/buttonDismiss"
           android:layout_centerHorizontal="true"
           android:layout_marginBottom="15dp"
-          android:text="Snooz" />
+          android:text="@string/snooz"
+          android:onClick="onSnoozButtonClick" />
 
       <Button
           android:id="@+id/buttonDismiss"
@@ -38,7 +20,29 @@
           android:layout_alignParentBottom="true"
           android:layout_centerHorizontal="true"
           android:layout_marginBottom="35dp"
-          android:text="Dismiss!"
+          android:text="@string/dismiss_"
           android:onClick="onDismissAlarmClick"/>
+
+      <TextView
+          android:id="@+id/textViewTime"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentTop="true"
+          android:layout_centerHorizontal="true"
+          android:layout_marginTop="76dp"
+          android:text=""
+          android:textSize="45sp"
+          android:textStyle="bold" />
+
+      <TextView
+          android:id="@+id/textViewName"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/textViewTime"
+          android:layout_centerHorizontal="true"
+          android:layout_marginTop="28dp"
+          android:text=""
+          android:textSize="30sp"
+          android:textStyle="bold" />
 
 </RelativeLayout>

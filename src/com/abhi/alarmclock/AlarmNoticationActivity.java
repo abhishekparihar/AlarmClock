@@ -1,5 +1,8 @@
 package com.abhi.alarmclock;
 
+import com.abhi.alarmclock.db.DbAdapter;
+import com.abhi.alarmclock.models.AlarmModel;
+
 import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
@@ -20,10 +23,18 @@ public class AlarmNoticationActivity extends Activity {
 	private static String TAG = "AlarmNoticationActivity";
 	private TextView textViewName;
 	private TextView textViewTime;
-	private Button buttonSnooz;
-	private Button buttonDismiss;
+	//	private Button buttonSnooz;
+	//	private Button buttonDismiss;
 	private WakeLock mWakeLock;
 	private MediaPlayer mPlayer;
+
+	private int hours;
+	private int minutes;
+	private String name;
+	private long date;
+	private long id;
+private DbAdapter dbAdapter;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,15 +43,19 @@ public class AlarmNoticationActivity extends Activity {
 
 		initializeView();
 
-		String time = getIntent().getIntExtra("hours", 0) + " : " + getIntent().getIntExtra("minutes", 0);
-		String name = getIntent().getStringExtra("name");
+		name = getIntent().getStringExtra("name");
+		hours = getIntent().getIntExtra("hours", 0);
+		minutes = getIntent().getIntExtra("minutes", 0);
+		date = getIntent().getLongExtra("date",0);
+		id = getIntent().getLongExtra("id",1);
 
+		String time = hours + " : " + minutes;
 		textViewName.setText(name);
 		textViewTime.setText(time);
 
 		playAlarm();
 
-		//Ensure wakelock release
+		dbAdapter = new DbAdapter(this);
 		Runnable releaseWakelock = new Runnable() {
 
 			@Override
@@ -63,8 +78,8 @@ public class AlarmNoticationActivity extends Activity {
 	private void initializeView() {
 		textViewName = (TextView)findViewById(R.id.textViewName);
 		textViewTime = (TextView)findViewById(R.id.textViewTime);
-		buttonSnooz = (Button) findViewById(R.id.buttonSnooz);
-		buttonDismiss = (Button) findViewById(R.id.buttonDismiss);
+		//		buttonSnooz = (Button) findViewById(R.id.buttonSnooz);
+		//		buttonDismiss = (Button) findViewById(R.id.buttonDismiss);
 
 	}
 
@@ -98,6 +113,7 @@ public class AlarmNoticationActivity extends Activity {
 			mWakeLock.release();
 		}
 		mPlayer.stop();
+		dbAdapter.update(id, populateModel(false));
 		finish();
 	}
 
@@ -115,10 +131,38 @@ public class AlarmNoticationActivity extends Activity {
 		}
 
 	}
-	
+
 	public void onDismissAlarmClick(View v){
 		mPlayer.stop();
+		dbAdapter.update(id, populateModel(false));
 		finish();
+	}
+
+	public void onSnoozButtonClick(View v){
+		
+		
+		minutes = minutes + 1;
+		if(minutes >= 60) {
+			hours = hours + 1;
+			minutes = minutes - 60;
+		}
+		AlarmModel alarmModel = populateModel(true);
+		dbAdapter.update(id, alarmModel);
+
+		BroadcastRecieverManager.setAlarm(alarmModel, this);
+
+		finish();
+	}
+	
+	private AlarmModel populateModel(Boolean isEnabled) {
+		AlarmModel alarmModel = new AlarmModel();
+		alarmModel.setDays(date);
+		alarmModel.setHours(hours);
+		alarmModel.setMinutes(minutes);
+		alarmModel.setName(name);
+		alarmModel.setEnabled(isEnabled);
+		
+		return alarmModel;
 	}
 
 }
