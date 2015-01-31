@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -65,35 +67,59 @@ public class AlarmListAdapter extends BaseAdapter {
 		TextView textViewAlarmName = (TextView)convertView.findViewById(R.id.textViewAlarmName);
 		TextView textViewDate = (TextView)convertView.findViewById(R.id.textViewDate);
 		TextView textViewAlarmDay = (TextView)convertView.findViewById(R.id.textViewAlarmDay);
-		ImageButton buttonDelete = (ImageButton)convertView.findViewById(R.id.buttonDelete);
-		
+		ImageButton buttonDelete = (ImageButton)convertView.findViewById(R.id.imgButtonDelete);
+
 		Switch switchOnOff = (Switch)convertView.findViewById(R.id.switchOnOff);
-		
+
 		Calendar c = Calendar.getInstance();
 		c.setTimeInMillis(model.days);
-		
+
 		SimpleDateFormat df = new SimpleDateFormat("dd- MMM");
 		String formatDate = df.format(model.days);
 		textViewAlarmTime.setText(model.hours + " : " + model.minutes);
 		textViewAlarmName.setText(model.name);
 		textViewDate.setText(formatDate);
 		textViewAlarmDay.setText(WEEKDAYS[c.get(Calendar.DAY_OF_WEEK)-1]);
-		
+
 		switchOnOff.setChecked(model.isEnabled);
-		
+
 		buttonDelete.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				Log.v("QQQQQQQQQ", ""+ alarmModels.get(position).id);
 				dbAdapter.delete(alarmModels.get(position).id);
 				alarmModels.remove(position);
 				notifyDataSetChanged();
-				
+
 			}
 		});
-		
+
+		switchOnOff.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				dbAdapter.updateSwitchState(alarmModels.get(position).id, isChecked);
+				changeAlarmState(alarmModels.get(position), isChecked);
+
+			}
+
+
+		});
+
 		return convertView;
+	}
+
+	private void changeAlarmState(AlarmModel alarmModel, boolean isChecked) {
+		Calendar cal = Calendar.getInstance();
+		long timeInMillis = alarmModel.days;
+		dbAdapter.updateSwitchState(alarmModel.id, isChecked);
+		if(isChecked && timeInMillis > cal.getTimeInMillis())
+			BroadcastRecieverManager.setAlarm(alarmModel, mContext);
+		else if (!isChecked) {
+			BroadcastRecieverManager.cancelAlarm(mContext, alarmModel.id);
+		}
+
 	}
 
 }

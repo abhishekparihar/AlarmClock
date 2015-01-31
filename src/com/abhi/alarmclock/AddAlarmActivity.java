@@ -82,13 +82,16 @@ public class AddAlarmActivity extends Activity {
 	}
 
 	public void  OnSaveButtonClick(View v) {
-		populateDataIntoModel();
-		DbAdapter dbAdapter = new DbAdapter(this);
-		dbAdapter.create(alarmModel);
-		BroadcastRecieverManager.setAlarm(alarmModel, this);
-		Log.v("", "++++++++++");
-		
-		finish();
+		if(!editTextName.getText().toString().trim().equals("")){
+			populateDataIntoModel();
+			DbAdapter dbAdapter = new DbAdapter(this);
+			dbAdapter.create(alarmModel);
+			BroadcastRecieverManager.setAlarm(alarmModel, this);
+			Log.v("", "++++++++++");
+
+			finish();
+		}else
+			Toast.makeText(this, "Name cannot be blank!!!", Toast.LENGTH_SHORT).show();
 	}
 
 
@@ -160,6 +163,6 @@ public class AddAlarmActivity extends Activity {
 		alarmModel.minutes = timePickerAlarm.getCurrentMinute().intValue();
 		alarmModel.days = cal.getTimeInMillis();
 		alarmModel.isEnabled = true;
-		
+
 	}
 }

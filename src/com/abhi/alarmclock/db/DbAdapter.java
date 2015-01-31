@@ -71,16 +71,18 @@ public class DbAdapter {
 	}
 
 	public AlarmModel fetch(long rowId) throws SQLException {
-		Cursor c = db.query(true, "alarm", dbColumns, "_id=" + rowId, null, null, null, null, null);
-
-		if (c != null) {
-			c.moveToFirst();
-		}
+		Cursor c = db.rawQuery("SELECT * FROM alarm WHERE _id=" + rowId, null);
 
 		if (c.moveToNext()) {
 			return populateDataIntoModel(c);
 		}
 		return null;
+	}
+	
+	public void updateSwitchState(Long rowId, Boolean isEnabled) {
+		ContentValues values = new ContentValues();
+		values.put("is_enabled", isEnabled);
+		db.update("alarm", values, "_id=" + rowId, null);
 	}
 
 	/*final public int getCount() {
